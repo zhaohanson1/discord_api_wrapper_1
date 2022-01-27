@@ -201,7 +201,7 @@ class HTTPClient:
 		return self.request(Route("GET", f'/channels/{channel_id}/messages', params=params))
 
 
-	def createMessages(self, channel_id, message: str):
+	def createMessage(self, channel_id, message: str):
 		"""
 		Post a message to a guild text or DM channel.
 		:return 	Message object
@@ -256,3 +256,23 @@ class HTTPClient:
 		:return 	 204 empty response on success
 		"""
 		return self.request(Route("DELETE", f'/channels/{channel_id}/pins/{message_id}'))
+
+
+	def getGateway(self):
+		"""
+		Returns an object with a single valid WSS URL, which the client can use for Connecting. 
+		Clients should cache this value and only call this endpoint to retrieve a new URL 
+		if they are unable to properly establish a connection using the cached version of the URL.
+		"""
+		return self.request(Route("GET", '/gateway'))
+
+
+	def getGatewayBot(self):
+		"""
+		Returns an object based on the information in Get Gateway, 
+		plus additional metadata that can help during the operation of large or sharded bots. 
+		Unlike the Get Gateway, this route should not be cached for extended periods of time 
+		as the value is not guaranteed to be the same per-call, 
+		and changes as the bot joins/leaves guilds.
+		"""
+		return self.request(Route("GET", '/gateway/bot'))
